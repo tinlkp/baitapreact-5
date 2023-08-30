@@ -1,6 +1,46 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { deletelUserAction, setSelectedUserAction } from '../../store/actions/userAction';
 
-export default class BangThongTin extends Component {
+
+class BangThongTin extends Component {
+    state = {
+        keyword: "",
+    }
+
+
+    renderContent = () => {
+        const data = this.props.userList.filter(element => {
+            return element.hoTen.toLowerCase().indexOf(this.state.keyword.toLocaleLowerCase()) !== -1;
+        });
+        
+
+        return data.map((element, idx) => {
+            return (
+                <tr key={idx}>
+                    <th>{element.id}</th>
+                    <th>{element.hoTen} </th>
+                    <th>{element.soDT}</th>
+                    <th>{element.email}</th>
+                    <th>
+                        <button onClick={() => this.props.dispatch(setSelectedUserAction(element))} className="button btn btn-warning">Sửa</button>
+                        <button onClick={() => this.props.dispatch(deletelUserAction(element))} className='btn btn-danger'>Xóa</button>
+                    </th>
+                </tr>
+            )
+
+
+        })
+    };
+
+    handleChange = (event) => {
+        console.log(event.target.value);
+        this.setState({
+            keyword: event.target.value,
+        });
+
+    }
+
     render() {
         return (
             <div className="card p-0 mt-3">
@@ -8,6 +48,7 @@ export default class BangThongTin extends Component {
                     <div className="col-4">
                         <div className="form-group mb-0">
                             <input
+                                onChange={this.handleChange}
                                 type="text"
                                 placeholder="Tìm kiếm theo họ tên..."
                                 className="form-control"
@@ -24,12 +65,25 @@ export default class BangThongTin extends Component {
                                 <th>Họ tên</th>
                                 <th>Số điện thoại</th>
                                 <th>Email</th>
+                                <th></th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            {this.renderContent()}
+                        </tbody>
                     </table>
                 </div>
             </div>
         )
     }
 }
+
+
+const mapStateToProps = (state) => {
+    return {
+        userList: state.userReducer.userList,
+    };
+};
+
+export default connect(mapStateToProps)(BangThongTin);
+
