@@ -64,6 +64,14 @@ class ThongTin extends Component {
         ref.innerHTML = mes;
         return false;
     }
+    validateCheckName = (value, ref, mes) => {
+        if (value.match("^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$")) {
+            ref.innerHTML = "";
+            return true;
+        }
+        ref.innerHTML = mes;
+        return false;
+    }
 
     validateRequired = (value, ref, mes) => {
         if (value) {
@@ -75,23 +83,28 @@ class ThongTin extends Component {
     };
 
     handleSubmit = (event) => {
+        document.getElementById("button").innerHTML = "Thêm Sinh Viên";
+        document.getElementById("id").disabled = false;
+
         event.preventDefault();
 
         let isValid = true;
+        if (document.getElementById("id").disabled = false) {
+            isValid &= this.validateRequired(this.state.id, this.idInputRef.current, "Chưa nhập mã sinh viên")
+                && this.validateCheck(this.state.id, this.idInputRef.current, "Nhập đúng số mã sinh viên", /^[0-9]+$/)
+                && this.validateCheckId(this.state.id, this.idInputRef.current, "Mã sinh viên đã tồn tại", this.props.userList);
+        }
 
 
-        isValid &= this.validateRequired(this.state.id, this.idInputRef.current, "Chưa nhập mã sinh viên")
-            && this.validateCheck(this.state.id, this.idInputRef.current, "Nhập đúng số mã sinh viên", /^[0-9]+$/)
-            && this.validateCheckId(this.state.id, this.idInputRef.current, "Mã sinh viên đã tồn tại", this.props.userList);
-
-        isValid &= this.validateRequired(this.state.hoTen, this.hoTenInputRef.current, "Chưa nhập họ tên");
+        isValid &= this.validateRequired(this.state.hoTen, this.hoTenInputRef.current, "Chưa nhập họ tên")
+            && this.validateCheckName(this.state.hoTen, this.hoTenInputRef.current, "Nhập đúng định hạng họ tên");
 
         isValid &= this.validateRequired(this.state.soDT, this.soDTInputRef.current, "Chưa nhập số điện thoại")
-            && this.validateCheck(this.state.soDT, this.soDTInputRef.current, "Vui lòng đúng nhập số điện thoại",/^[0-9]+$/)
+            && this.validateCheck(this.state.soDT, this.soDTInputRef.current, "Vui lòng đúng nhập số điện thoại", /^[0-9]+$/)
             && this.validatePhoneNumber(this.state.soDT.length, this.soDTInputRef.current, "Số điện thoại có 10 số", 10);
 
         isValid &= this.validateRequired(this.state.email, this.emailInputRef.current, "Chưa nhập email")
-            && this.validateCheck(this.state.email, this.emailInputRef.current, "Nhập email đúng định dạng",/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+            && this.validateCheck(this.state.email, this.emailInputRef.current, "Nhập email đúng định dạng", /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
         if (isValid) {
 
@@ -127,6 +140,7 @@ class ThongTin extends Component {
                                 <div className="form-group">
                                     <label>Mã SV</label>
                                     <input
+                                        id='id'
                                         value={this.state.id}
                                         onChange={this.handleChange}
                                         type="text"
@@ -186,7 +200,7 @@ class ThongTin extends Component {
                             </div>
                         </div>
 
-                        <button className="btn btn-success mr-2">Thêm sinh viên</button>
+                        <button id='button' className="btn btn-success mr-2">Thêm sinh viên</button>
                     </form>
                 </div>
             </div>

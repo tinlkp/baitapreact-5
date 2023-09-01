@@ -23,6 +23,8 @@ export const userReducer = (state = DEFAULT_STATE, action) => {
             break;
         }
         case SET_SELECTED_USER: {
+            document.getElementById("button").innerHTML = "Cập nhật";
+            document.getElementById("id").disabled = true;
             state.selectedUser = action.payload;
 
             break;
@@ -44,9 +46,11 @@ export const userReducer = (state = DEFAULT_STATE, action) => {
 
             const index = data.findIndex((element) => element.id === action.payload.id);
             data.splice(index, 1);
-            
+
             state.userList = data;
             localStorage.setItem("USER_LIST", JSON.stringify(state.userList));
+
+            break;
         }
 
     }

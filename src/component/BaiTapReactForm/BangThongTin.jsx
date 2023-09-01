@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { deletelUserAction, setSelectedUserAction } from '../../store/actions/userAction';
 
 
+import "./style.css";
+
 class BangThongTin extends Component {
     state = {
         keyword: "",
@@ -13,7 +15,7 @@ class BangThongTin extends Component {
         const data = this.props.userList.filter(element => {
             return element.hoTen.toLowerCase().indexOf(this.state.keyword.toLocaleLowerCase()) !== -1;
         });
-        
+
 
         return data.map((element, idx) => {
             return (
@@ -57,8 +59,8 @@ class BangThongTin extends Component {
                     </div>
 
                 </div>
-                <div className="card-body">
-                    <table className="table">
+                <div className="card-body fixTableHead">
+                    <table className="table ">
                         <thead className='bg-dark text-white'>
                             <tr>
                                 <th>Mã SV</th>
@@ -72,6 +74,8 @@ class BangThongTin extends Component {
                             {this.renderContent()}
                         </tbody>
                     </table>
+
+
                 </div>
             </div>
         )
