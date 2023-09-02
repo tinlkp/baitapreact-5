@@ -19,7 +19,7 @@ class ThongTin extends Component {
     }
     static getDerivedStateFromProps(nextProps, currentState) {
         if (nextProps.selectedUser && nextProps.selectedUser.key !== currentState.key) {
-            console.log(1)
+           
             currentState = nextProps.selectedUser;
         }
 
@@ -89,12 +89,14 @@ class ThongTin extends Component {
         event.preventDefault();
 
         let isValid = true;
-        if (document.getElementById("id").disabled = false) {
+
+        if (this.state.key) { }
+        else {
+            document.getElementById("idError").style.display = "block";
             isValid &= this.validateRequired(this.state.id, this.idInputRef.current, "Chưa nhập mã sinh viên")
                 && this.validateCheck(this.state.id, this.idInputRef.current, "Nhập đúng số mã sinh viên", /^[0-9]+$/)
                 && this.validateCheckId(this.state.id, this.idInputRef.current, "Mã sinh viên đã tồn tại", this.props.userList);
         }
-
 
         isValid &= this.validateRequired(this.state.hoTen, this.hoTenInputRef.current, "Chưa nhập họ tên")
             && this.validateCheckName(this.state.hoTen, this.hoTenInputRef.current, "Nhập đúng định hạng họ tên");
@@ -148,6 +150,7 @@ class ThongTin extends Component {
                                         name="id"
                                     />
                                     <span
+                                        id='idError'
                                         ref={this.idInputRef}
                                         className="text-danger"
                                     ></span>

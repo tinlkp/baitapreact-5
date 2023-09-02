@@ -25,13 +25,16 @@ export const userReducer = (state = DEFAULT_STATE, action) => {
         case SET_SELECTED_USER: {
             document.getElementById("button").innerHTML = "Cập nhật";
             document.getElementById("id").disabled = true;
+            document.getElementById("idError").style.display = "none";
+
             state.selectedUser = action.payload;
 
             break;
         }
         case UPDATE_USER: {
             const data = [...state.userList];
-            const index = data.findIndex((element) => element.id = action.payload.id)
+            const index = data.findIndex((element) => element.id === action.payload.id);
+
             data[index] = action.payload;
 
             state.selectedUser = null;
